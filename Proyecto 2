@@ -1,0 +1,11 @@
+#include <Arduino.h>
+#include "SPI.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_ILI9341.h"
+
+#define PIN_ECHO 12
+#define PIN_TRIG 13
+#define BUZZER 2
+#define TFT_DC 21
+#define TFT_CS 22
+#define LED 4
