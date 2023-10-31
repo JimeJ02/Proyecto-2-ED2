@@ -1,55 +1,50 @@
 ESP32
 #include <Arduino.h>
 
-#define PIN_ECHO 12
-#define PIN_TRIG 13
+
+volatile float tempC;
+
+#define ADC_VREF_mV    5000.0 
+#define ADC_RESOLUTION 4096.0
+
+#define PIN_TEMP 13 
 #define PIN_LED 33
 
-int distancia = 0;
+int senal;
 
-String distStr;
-
-void setup() {
-  Serial.begin(115200);
-  Serial2.begin (115200);
-  pinMode(PIN_TRIG, OUTPUT);
-  pinMode(PIN_ECHO, INPUT);
-  pinMode(PIN_LED, OUTPUT); 
-  
+void setup() ; {
+    Serial2.begin(115200);
+    Serial.begin(115200);
+    pinMode(PIN_TEMP, INPUT);
+    pinMode(PIN_LED, OUTPUT); 
 }
 
 void loop() {
-  // Start a new measurement:
+  
   if (Serial2.available() > 0) {
-    char dato = Serial2.read();
-    if (dato == 'D') {
-      digitalWrite(13, LOW);
-      delayMicroseconds(2);
-      digitalWrite(13, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(13, LOW);
-      
-      distancia = pulseIn(12, HIGH) / 58; // Convert pulse duration to distance in centimeters
+    char comand = Serial2.read();
+    if (comand == 'T'){
+    int adcVal = analogRead(PIN_TEMP);
+    float milliVolt = adcVal * (ADC_VREF_mV / ADC_RESOLUTION);
+    tempC = milliVolt / 10;
 
-      if (distancia > 0) {
+    if (temperatura > 0) {
         digitalWrite(PIN_LED, HIGH); // Enciende el LED durante la medición
       }
 
-      Serial.print("Distancia:");
-      Serial.print(distancia);
-      Serial.print("cm");
+    Serial.print("Temperature: ");
+    Serial.print(tempC);
+    Serial.print(" °C ");
 
-      digitalWrite(4, LOW); // Apaga el LED después de la medición
+    digitalWrite(4, LOW); // Apaga el LED después de la medición
 
-       //Se manda el valor de temperatura cómo un string a la tiva C
-      char distStr[8];
-      dtostrf(distancia, 4, 2, distStr); //Se manda con 2 digitos y dos decimales
-      Serial2.print(distStr);
-      delay(250);
+    char buffer[8];
+    dtostrf(tempC, 4, 2, buffer); 
+    Serial2.print(buffer);
+    delay(250);
     }
   }
 }
-
 
 
 
