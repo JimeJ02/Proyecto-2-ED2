@@ -59,6 +59,7 @@ TIVA
 
 /* Se utilizó el ejemplo ili9341.rar mostrado en clase por Pablo Maldonado para la utilización del codigo para la pantalla TFT*/
 /* Se utilizó un ejemplo para el uso de la temepratura (conversiones)*/
+/* Se cambio el sensor de distancia ultrasónico por un sensor de temperatura LM_35 porque no funcionó*/
 
 //Inlcusión de las librerias para el uso de todas las partes del codigo
 #include <stdint.h>
